@@ -32,7 +32,7 @@ make menuconfig
 ```
 中途需要编译一段时间，如果出现问题，可能是因为缺少相关依赖，使用apt安装即可。
 ## 第三步，让我们看看图形化配置
-![配置界面](https://img-blog.csdnimg.cn/20181231110638491.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2ZqaDE5OTc=,size_16,color_FFFFFF,t_70)
+![配置界面](menuconfig.png)
 
 &#8195;  注意，第一次进入的界面的配置是根据当前kali系统的配置文件.config自动生成的。这个配置介于命令make allyesconfig和make allnoconfig之间，如果按照这个配置编译，系统内核大约有300M~400M之间，且编译的时间大概需要6个小时，不利于我们的编译和调试，如果按照make allnoconfig配置，1~2分钟之间可以编译好，系统内核也只有500k,但很多功能用不了，显然是不切实际的，所以我们要根据自己的需求，不断去除和添加自己想要的功能。最简便的方法是根据当前配置不断地删减功能，直到不能再减小为止（这样的目的是保留系统的verbose报错功能，输出启动日志以便后续调试，如果一开始就make allnoconfig 虽然系统最小，但很多配置不全，不如使用原系统默认配置，然后一项项删减。）。比如启动日志遇到/bin/sh exists but can't execute,意味着可执行文件执行遇到问题，就需要把excutable file format里面的kernel support for elf binaries启用以及64bit kernel启动，遇到permission denied 就说明可能把自制内核按照在发行版内核同一个分区里导致冲突，因此需要把自制内核安装在另一个分区里。如果遇到can't udev的问题，说明守护程序udev没有打开或者硬盘驱动没有安装，就需要我们安装相应的硬盘驱动，步骤如下:
 键入modinfo mptbase，提示如下信息：
@@ -371,7 +371,7 @@ linux /bzImage ro root=/dev/sdb1
 
 	update-grub
 重启系统，在grub菜单选择My Linux-4.19.11如果看到类似以下界面说明编译成功
-![成功界面](https://img-blog.csdnimg.cn/20181231212319443.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2ZqaDE5OTc=,size_16,color_FFFFFF,t_70)
+![成功界面](bootlog.png)
 
 ## 第八步、添加系统调用
 回到原系统，更改linux源码以下文件：
@@ -379,11 +379,11 @@ linux /bzImage ro root=/dev/sdb1
 	vi /root/linux-4.19.11/arch/x86/entry/syscalls/syscall_64.tbl
 	
 添加如下两个系统调用，注意这两种系统调用的形式不太一样，主要是为了传参，后面会讲到。
-![系统调用表](https://img-blog.csdnimg.cn/20181231214600413.png)
+![系统调用表](syscalltbl.png)
 修改头文件，添加如下两个函数原型
 
 	vi /root/linux-4.19.11/include/linux/syscall.h
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20181231214906557.png)
+![在这里插入图片描述](headfile.png)
 修改sys.c源文件，添加如下函数定义
 
 	vi /root/linux-4.19.11/kernel/sys.c
@@ -430,7 +430,7 @@ int main(int argc,char *argv[])
 目前在新系统里执行test1是不行的，所以需要分析test1的文件类型
 	
 	string test1
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20181231220104790.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2ZqaDE5OTc=,size_16,color_FFFFFF,t_70)
+![在这里插入图片描述](binaryinfo.png)
 
 由输出信息可见，执行该文件需要The GNU C Library的部分库，所以要从原系统复制过去
 ```
@@ -444,7 +444,7 @@ cp /lib64/ld-linux-x86-64.so.2 /lib64/
 
 重启进入自制系统，如果测试成功，会有如下结果：
 
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20181231221213599.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2ZqaDE5OTc=,size_16,color_FFFFFF,t_70)
+![在这里插入图片描述](result.png)
 
 至此，系统调用完成。
 
