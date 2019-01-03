@@ -443,6 +443,7 @@ cp /lib64/ld-linux-x86-64.so.2 /lib64/
 注意除了两个.so结尾的文件，其余复制过去的都是软连接，软连接指向那两个文件，如果软连接发生故障可以用ln -s 修复。
 
 重启进入自制系统，如果测试成功，会有如下结果：
+
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20181231221213599.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2ZqaDE5OTc=,size_16,color_FFFFFF,t_70)
 
 至此，系统调用完成。
