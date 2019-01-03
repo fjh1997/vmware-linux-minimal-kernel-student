@@ -34,7 +34,7 @@ make menuconfig
 ## 第三步，让我们看看图形化配置
 ![配置界面](menuconfig.png)
 
-&#8195;  注意，第一次进入的界面的配置是根据当前kali系统的配置文件.config自动生成的。这个配置介于命令make allyesconfig和make allnoconfig之间，如果按照这个配置编译，系统内核大约有300M~400M之间，且编译的时间大概需要6个小时，不利于我们的编译和调试，如果按照make allnoconfig配置，1~2分钟之间可以编译好，系统内核也只有500k,但很多功能用不了，显然是不切实际的，所以我们要根据自己的需求，不断去除和添加自己想要的功能。最简便的方法是根据当前配置不断地删减功能，直到不能再减小为止（这样的目的是保留系统的verbose报错功能，输出启动日志以便后续调试，如果一开始就make allnoconfig 虽然系统最小，但很多配置不全，不如使用原系统默认配置，然后一项项删减。）。比如启动日志遇到/bin/sh exists but can't execute,意味着可执行文件执行遇到问题，就需要把excutable file format里面的kernel support for elf binaries启用以及64bit kernel启动，遇到permission denied 就说明可能把自制内核按照在发行版内核同一个分区里导致冲突，因此需要把自制内核安装在另一个分区里。如果遇到can't udev的问题，说明守护程序udev没有打开或者硬盘驱动没有安装，就需要我们安装相应的硬盘驱动，步骤如下:
+&#8195;  注意，第一次进入的界面的配置是根据当前kali系统的配置文件.config自动生成的。这个配置介于命令make allyesconfig和make allnoconfig之间，如果按照这个配置编译，系统内核大约有300M\~400M之间，且编译的时间大概需要6个小时，不利于我们的编译和调试，如果按照make allnoconfig配置，1~2分钟之间可以编译好，系统内核也只有500k,但很多功能用不了，显然是不切实际的，所以我们要根据自己的需求，不断去除和添加自己想要的功能。最简便的方法是根据当前配置不断地删减功能，直到不能再减小为止（这样的目的是保留系统的verbose报错功能，输出启动日志以便后续调试，如果一开始就make allnoconfig 虽然系统最小，但很多配置不全，不如使用原系统默认配置，然后一项项删减。）。比如启动日志遇到/bin/sh exists but can't execute,意味着可执行文件执行遇到问题，就需要把excutable file format里面的kernel support for elf binaries启用以及64bit kernel启动，遇到permission denied 就说明可能把自制内核按照在发行版内核同一个分区里导致冲突，因此需要把自制内核安装在另一个分区里。如果遇到can't udev的问题，说明守护程序udev没有打开或者硬盘驱动没有安装，就需要我们安装相应的硬盘驱动，步骤如下:
 键入modinfo mptbase，提示如下信息：
 
 ```
