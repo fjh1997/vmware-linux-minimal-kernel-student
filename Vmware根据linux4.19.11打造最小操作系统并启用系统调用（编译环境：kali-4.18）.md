@@ -1,5 +1,4 @@
-﻿@[TOC](Vmware根据linux4.19.11打造最小操作系统并启用系统调用（编译环境：kali-4.18）)
-
+# Vmware根据linux4.19.11打造最小操作系统并启用系统调用（编译环境：kali-4.18
 
 
 这段时间，学校要做操作系统课程设计，任务如下：
@@ -432,6 +431,7 @@ int main(int argc,char *argv[])
 	
 	string test1
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20181231220104790.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2ZqaDE5OTc=,size_16,color_FFFFFF,t_70)
+
 由输出信息可见，执行该文件需要The GNU C Library的部分库，所以要从原系统复制过去
 ```
 mkdir /mnt/lib/x86_64-linux-gnu
@@ -444,6 +444,7 @@ cp /lib64/ld-linux-x86-64.so.2 /lib64/
 
 重启进入自制系统，如果测试成功，会有如下结果：
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20181231221213599.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2ZqaDE5OTc=,size_16,color_FFFFFF,t_70)
+
 至此，系统调用完成。
 
 ###  配置文件：
