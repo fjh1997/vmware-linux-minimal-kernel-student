@@ -76,35 +76,10 @@ Scsi磁盘需要Sata控制器，这一步比较关键，要从不同厂商的控
 
 选取"File Systems"-"The Extend 4(ext4) filesystem"
 
-
 选取"Executable file formats"-"kernel support for ELF binaries"
 
 "Kernel support for scripts starting with #!"
 
-其他设置：
-可见硬盘驱动为 Fusion MPT base driver
-
-配置PCI总线驱动,依次选"Bus Option"-"Pci support":
-
-
-前面看到我的磁盘是Scsi类型，因此需要配置Scsi，依次选"Device Drivers"-"Scsi device support"--"Scsi device support","Scsi disk support"
-
-
-Scsi磁盘需要Sata控制器，这一步比较关键，要从不同厂商的控制器驱动中挑选出合适的驱动。根据前面udevadm的输出我的虚拟机，使用的是Fusion LSI磁盘驱动：依次选取
-1)"Device Driver"-"Serial ATA and Parallel ATA driver"-"AHCI SATA support";
-2)"Device Driver"-"Fusion MPT device support"-"Fusion MPT ScsiHost driver for SPI";
-
-3)"Device Driver"-"Scsi device support"-"SCSI low-level drivers"-"LSI MPT Fusion SAS 2.0 Device Driver"
-
-
-设备驱动配置完毕，需要再配置内核支持的文件系统和ELF文件格式。为了方便起见，我们不设置内核支持initramfs，直接用busybox启动。
-
-选取"File Systems"-"The Extend 4(ext4) filesystem"
-
-
-选取"Executable file formats"-"kernel support for ELF binaries"
-
-"Kernel support for scripts starting with #!"
 
 其他设置：
 ```
