@@ -1,4 +1,4 @@
-# Make minimize Operation System with customized system call function based on linux4.19.11 kernel source in VMware Workstation（env：kali-4.18）
+# Make minimal Operation System with customized system call function based on linux4.19.11 kernel source in VMware Workstation（env：kali-4.18）
 
 
 Recently ，I take a Course Design in school，detailed below：
